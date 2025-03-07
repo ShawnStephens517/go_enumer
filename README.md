@@ -29,3 +29,12 @@ Intended as a educational and/or sanctioned tool for enumerating and some light 
 *Obfuscate for a sneakier binary (AV/EDR). Actions this tool runs, should light up SIEM or other monitoring tools.*
 
 `garble -literals build .`
+
+
+# TODO
+- Makefile for easy builds
+ - Flag to create benign payloads pre-build, save shellcode to a configfile (TOML, YML, JSON)(config file uploadable)
+ - Build with configfile to inject payloads at build time
+ - Obfuscate flag to Garble the code
+- Add Benign attacks/POC code for enhanced Detection options
+- Ensure code/project includes any applicable Licenses from other projects used as motivation or code.  
