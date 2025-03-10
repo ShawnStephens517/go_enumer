@@ -20,6 +20,7 @@ TODO
 [] Look at Go-native implimentation of some of Win/LinPeas functionallity
 [] Output to multi-format (CSV, TXT, HTML, xlsx?)
 [] Comments and Readme update...
+[] Add a Timer Function that staggers execution within a set min max range
 */
 
 var rootCmd = &cobra.Command{
