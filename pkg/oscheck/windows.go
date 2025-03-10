@@ -19,6 +19,21 @@ func checkWSL() {
 	}
 	//Code Me Here
 }
+func protectionChecks(){
+	//Check LSA
+	//Check Credential Guard
+	//UAC Settings
+}
+
+func accounting(){
+	//Password Policy Check
+	//Cached Credentials
+	//Winlogon Credential Check
+	//Saved RDP Connection Info
+	//Stored Putty Creds
+	//SSH Keys & Known Hosts
+	//cmdkey.exe /list
+}
 
 func roastAble() {
 	fmt.Println("Can I kerberoast this box???")
