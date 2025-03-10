@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"os/exec"
 	"time"
-  "golang.org/x/sys/windows"
+  	"golang.org/x/sys/windows"
+	"golang.org/x/sys/windows/registry"
 )
 
 func checkWSL() {
@@ -19,9 +20,18 @@ func checkWSL() {
 	//Code Me Here
 }
 
-func roastMe() {
+func roastAble() {
 	fmt.Println("Can I kerberoast this box???")
-	//TODO...Code Me Here
+	//TODO: Code Me Here
+	/*
+ 	fmt.Println("Retrieving SPNs")
+  	spns, err := exec.Command ("powershell.exe", "get-adobject", "-filter", "{serviceprincipalname -like &serviceaccountfromConfigFile(viper library)}", "-properties", "serviceprincipalname")
+   	output, err := spns.Output()
+    	if err != nil {
+     		return "", fmt.Errorf("Unable to obtain Service Principal Names using the supplied Service Account", err)
+      	}
+        return string(output), nil
+ 	*/
 }
 
 func schTask() {
@@ -41,6 +51,31 @@ func schTask() {
   //Code Me Here
 }
 
+func checkLoggingInfo(){
+	k1, err := registry.OpenKey(registry.Current_User, 'Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query Powershell User key", err)
+	}
+	defer. k1.Close()
+
+	sv, _, err := k1.GetStringValue("PowershellScriptBlocking")
+	if err!= nil {
+		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present", err)
+	}
+
+	k2, err := registry.OpenKey(registry.Current_User, 'WoW6432Node\Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query Powershell User key", err)
+	}
+	defer. k2.Close()
+
+	sv, _, err := k2.GetStringValue("PowershellScriptBlocking")
+	if err!= nil {
+		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present", err)
+	}
+	//TODO: return k1 & k2 value or error message
+}
+
 func gettheBasics() (string, error) {
 	fmt.Println("What is the Hostname, Scriptblock Logging, etc...")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -56,8 +91,9 @@ func gettheBasics() (string, error) {
 }
 
 func WinCheck() {
+	gettheBasics()
 	checkWSL()
-	roastMe()
+	roastAble()
 	schTask()
 
 }
