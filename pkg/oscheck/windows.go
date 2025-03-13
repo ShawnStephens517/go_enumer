@@ -28,9 +28,18 @@ func protectionChecks(){
 	}
 	defer. lkey.Close()
 
-	sv, _, err := lkey.GetStringValue("RunAsPPLBoot")
+	names, err := 1key.ValueNames()
 	if err != nil {
-		return "", fmt.Errorf("Can't determine if LSA protections enabled!", err)
+		return "", fmt.Errorf("Unable to determin LSA Protections", err)
+	}
+	
+	for _, name := range names {
+		sv, _, err := lkey.GetStringValue("RunAsPPLBoot")
+		if err != nil {
+			return "", fmt.Errorf("Can't determine if LSA protections enabled!", err)
+			continue
+	}
+		fmt.Printf("%s: %s\n", name, value)
 	}
 	
 	//Check Credential Guard
