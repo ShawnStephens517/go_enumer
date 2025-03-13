@@ -30,11 +30,11 @@ func protectionChecks(){
 
 	names, err := 1key.ValueNames()
 	if err != nil {
-		return "", fmt.Errorf("Unable to determin LSA Protections", err)
+		return "", fmt.Errorf("Unable to determine LSA Protections", err)
 	}
 	
 	for _, name := range names {
-		sv, _, err := lkey.GetStringValue("RunAsPPLBoot")
+		sv, _, err := lkey.GetStringValue(name)
 		if err != nil {
 			return "", fmt.Errorf("Can't determine if LSA protections enabled!", err)
 			continue
@@ -42,13 +42,34 @@ func protectionChecks(){
 		fmt.Printf("%s: %s\n", name, value)
 	}
 	
-	//Check Credential Guard
+	//Check Credential Guard should be caught in the previous check
+	
 	//UAC Settings
 }
 
 func accounting(){
 	//Password Policy Check
 	//Cached Credentials
+	cakey, err := registry.OpenKey(registry.LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query Cached Creds", err)
+	}
+	defer. cakey.Close()
+
+	names, err := cakey.ValueNames()
+	if err != nil {
+		return "", fmt.Errorf("Unable to determine Cached Creds", err)
+	}
+	
+	for _, name := range names {
+		sv, _, err := cakey.GetStringValue(name)
+		if err != nil {
+			return "", fmt.Errorf("Can't determine if Cached Creds present", err)
+			continue
+	}
+		fmt.Printf("%s: %s\n", name, value)
+	}
+	
 	//Winlogon Credential Check
 	//Saved RDP Connection Info
 	//Stored Putty Creds
