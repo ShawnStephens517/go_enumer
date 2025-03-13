@@ -21,6 +21,18 @@ func checkWSL() {
 }
 func protectionChecks(){
 	//Check LSA
+
+	lkey, err := registry.OpenKey(registry.LOCAL_MACHINE, 'SYSTEM\CurrentControlSet\Control\LSA', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query LSA Protections", err)
+	}
+	defer. lkey.Close()
+
+	sv, _, err := lkey.GetStringValue("RunAsPPLBoot")
+	if err != nil {
+		return "", fmt.Errorf("Can't determine if LSA protections enabled!", err)
+	}
+	
 	//Check Credential Guard
 	//UAC Settings
 }
@@ -67,28 +79,43 @@ func schTask() {
 }
 
 func checkLoggingInfo(){
-	k1, err := registry.OpenKey(registry.Current_User, 'Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
+	k1, err := registry.OpenKey(registry.CURRENT_USER, 'Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Powershell User key", err)
 	}
 	defer. k1.Close()
 
 	sv, _, err := k1.GetStringValue("PowershellScriptBlocking")
-	if err!= nil {
-		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present", err)
+	if err != nil {
+		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present?", err)
 	}
 
-	k2, err := registry.OpenKey(registry.Current_User, 'WoW6432Node\Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
+	k2, err := registry.OpenKey(registry.CURRENT_USER, 'WoW6432Node\Software\Policies\Microsoft\Windows\Powershell', registry.QUERY_VALUE)
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Powershell User key", err)
 	}
 	defer. k2.Close()
 
 	sv, _, err := k2.GetStringValue("PowershellScriptBlocking")
-	if err!= nil {
-		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present", err)
+	if err != nil {
+		return "", fmt.Errorf("Unable to query ScriptBlock Value. Is the key present?", err)
 	}
-	//TODO: return k1 & k2 value or error message
+
+
+	k3, err := registry.OpenKey(registry.LOCAL_MACHINE, 'SOFTWARE\Policies\Microsoft\Windows\EventLog\EventForwarding\SubscriptionManager', registry.QUERY_VALUE)
+	if err != nil {
+		return "", fmt.Errorf("Logs not being forwarded and/or registry not found", err)
+	}
+	defer.k3.Close()
+
+	sv, _, err := k3.GetStringValue("")
+	if err != nil {
+		return "", fmt.Errorf("Unable to query Event Forward. Is this present?", err)
+	}
+	
+	//TODO: return k(x) value or error message
+
+	
 }
 
 func gettheBasics() (string, error) {
