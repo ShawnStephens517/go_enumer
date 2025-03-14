@@ -26,7 +26,7 @@ func protectionChecks(){
 	if err != nil{
 		return "", fmt.Errorf("Unable to query LSA Protections", err)
 	}
-	defer. lkey.Close()
+	defer.lkey.Close()
 
 	names, err := 1key.ValueNames()
 	if err != nil {
@@ -44,7 +44,26 @@ func protectionChecks(){
 	
 	//Check Credential Guard should be caught in the previous check
 	
-	//UAC Settings
+	//UAC Settings. We want to capture the Values here, and also specifically check for EnableLUA =1. If so, display that there are some UAC settings enabled. TODO
+	ukey, err := registry.OpenKey(registry.LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query UAC Settings", err)
+	}
+	defer.lkey.Close()
+
+	names, err := ukey.ValueNames()
+	if err != nil {
+		return "", fmt.Errorf("Unable to determine UAC Settings", err)
+	}
+	
+	for _, name := range names {
+		sv, _, err := ukey.GetStringValue(name)
+		if err != nil {
+			return "", fmt.Errorf("Can't determine if UAC Protections enabled or ", err)
+			continue
+	}
+		fmt.Printf("%s: %s\n", name, value)
+	}
 }
 
 func accounting(){
@@ -54,7 +73,7 @@ func accounting(){
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Cached Creds", err)
 	}
-	defer. cakey.Close()
+	defer.cakey.Close()
 
 	names, err := cakey.ValueNames()
 	if err != nil {
@@ -75,6 +94,21 @@ func accounting(){
 	//Stored Putty Creds
 	//SSH Keys & Known Hosts
 	//cmdkey.exe /list
+	
+	//Recently Run actions. Determine if system may have been pre-compromised using Win + R or if there are some sketchy actions ran previously that may assist in our efforts.
+	//Need to Capture the users listed in the HKU key, store in variable and loop through the checks for this Key.
+	RunMRUkeyu, err := registry.OpenKey(registry.USERS, '%s\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU', registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query Recently Ran things through Win+R. HKU", err)
+	}
+	defer.RunMRUkeyu.Close()
+
+	//Check 2
+	RunMRUkeycu, err := registry.Openkey(registry.CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU", registry.QUERY_VALUE)
+	if err != nil{
+		return "", fmt.Errorf("Unable to query Recently Ran through Win+R. HKCU", err)
+	}
+	defer.RunMRUkeycu.Close()
 }
 
 func roastAble() {
@@ -113,7 +147,7 @@ func checkLoggingInfo(){
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Powershell User key", err)
 	}
-	defer. k1.Close()
+	defer.k1.Close()
 
 	sv, _, err := k1.GetStringValue("PowershellScriptBlocking")
 	if err != nil {
@@ -124,7 +158,7 @@ func checkLoggingInfo(){
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Powershell User key", err)
 	}
-	defer. k2.Close()
+	defer.k2.Close()
 
 	sv, _, err := k2.GetStringValue("PowershellScriptBlocking")
 	if err != nil {
