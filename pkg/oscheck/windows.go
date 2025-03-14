@@ -10,6 +10,15 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
+func capRegUsers(){
+/*
+TODO: 
+Need to Capture the users listed in the HKU key
+The results will probably need to be Exported to a struct &/ array for iterating through for multiple registry checks within this Key
+
+return _,
+*/
+}
 func checkWSL() {
 	fmt.Println("Capture if WSL Enabled???")
 	cmd := exec.Command("wsl", "--list", "--verbose")
@@ -96,8 +105,7 @@ func accounting(){
 	//cmdkey.exe /list
 	
 	//Recently Run actions. Determine if system may have been pre-compromised using Win + R or if there are some sketchy actions ran previously that may assist in our efforts.
-	//Need to Capture the users listed in the HKU key, store in variable and loop through the checks for this Key.
-	RunMRUkeyu, err := registry.OpenKey(registry.USERS, '%s\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU', registry.QUERY_VALUE)
+	RunMRUkeyu, err := registry.OpenKey(registry.USERS, '&variablefromHCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RunMRU', registry.QUERY_VALUE)
 	if err != nil{
 		return "", fmt.Errorf("Unable to query Recently Ran things through Win+R. HKU", err)
 	}
