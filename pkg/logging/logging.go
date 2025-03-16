@@ -145,7 +145,7 @@ func WriteAllFormats(logEntries []LogEntry, baseFilename string) {
 		{".txt", writeTXT},
 		{".csv", writeCSV},
 		{".html", writeHTML},
-		{".xlsx", writeXLSX},
+		//{".xlsx", writeXLSX},
 	}
 
 	var wg sync.WaitGroup
