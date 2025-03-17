@@ -7,6 +7,6 @@ import (
 	"fmt"
 )
 
-func CaptureSysInfo() {
+func LinCheck() {
 	fmt.Println("Gathering basic Linux info")
 }
