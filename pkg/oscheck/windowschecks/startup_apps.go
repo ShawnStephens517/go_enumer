@@ -1,21 +1,17 @@
+//go:build windows
 // +build windows
 
-package oscheck
+package windowschecks
 
 import (
-	"context"
 	"fmt"
-	"os/exec"
-	"time"
 
-	"github.com/shawnstephens517/go_enumer/pkg/logging"
-	"github.com/shawnstephens517/go_enumer/pkg/utils"
 	"golang.org/x/sys/windows/registry"
 )
 
-func Startup_RegistryLM() (string, error){
-  //Check Startup Registry Locations
-  	var result string
+func Startup_RegistryLM() (string, error) {
+	//Check Startup Registry Locations
+	var result string
 
 	startupKeyLM, err := registry.OpenKey(registry.LOCAL_MACHINE, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.QUERY_VALUE)
 	if err != nil {
@@ -37,18 +33,18 @@ func Startup_RegistryLM() (string, error){
 		}
 	}
 
-  startupKeyRONCE, err := registry.OpenKey(registry.LOCAL_MACHINE, `Software\Microsoft\Windows\CurrentVersion\RunOnce`, registry.QUERY_VALUE)
+	startupKeyRONCE, err := registry.OpenKey(registry.LOCAL_MACHINE, `Software\Microsoft\Windows\CurrentVersion\RunOnce`, registry.QUERY_VALUE)
 	if err != nil {
 		return "", fmt.Errorf("unable to query Local Machine Startup Registry: %v", err)
 	}
 	defer startupKeyRONCE.Close()
 
-	names, err := startupKeyRONCE.ReadValueNames(0)
+	namesOnce, err := startupKeyRONCE.ReadValueNames(0)
 	if err != nil {
 		return "", fmt.Errorf("unable to read Local Machine Startup value names: %v", err)
 	}
 	result += "Local Machine RunOnce:\n"
-	for _, name := range names {
+	for _, name := range namesOnce {
 		value, _, err := startupKeyRONCE.GetStringValue(name)
 		if err != nil {
 			result += fmt.Sprintf("  %s: error retrieving value\n", name)
@@ -56,14 +52,13 @@ func Startup_RegistryLM() (string, error){
 			result += fmt.Sprintf("  %s: %s\n", name, value)
 		}
 	}
-  return result, nil
-  
+	return result, nil
+
 }
 
-
-func Startup_RegistryCU() (string, error){
-  //Check Startup Registry Locations
-  	var result string
+func Startup_RegistryCU() (string, error) {
+	//Check Startup Registry Locations
+	var result string
 
 	startupKeyCU, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\Run`, registry.QUERY_VALUE)
 	if err != nil {
@@ -71,12 +66,12 @@ func Startup_RegistryCU() (string, error){
 	}
 	defer startupKeyCU.Close()
 
-	names, err := startupKeyCU.ReadValueNames(0)
+	namesOnce, err := startupKeyCU.ReadValueNames(0)
 	if err != nil {
 		return "", fmt.Errorf("unable to read Current User Startup value names: %v", err)
 	}
 	result += "Current User Run:\n"
-	for _, name := range names {
+	for _, name := range namesOnce {
 		value, _, err := startupKeyCU.GetStringValue(name)
 		if err != nil {
 			result += fmt.Sprintf("  %s: error retrieving value\n", name)
@@ -84,7 +79,7 @@ func Startup_RegistryCU() (string, error){
 			result += fmt.Sprintf("  %s: %s\n", name, value)
 		}
 	}
-  
+
 	startupKeyCUONCE, err := registry.OpenKey(registry.CURRENT_USER, `Software\Microsoft\Windows\CurrentVersion\RunOnce`, registry.QUERY_VALUE)
 	if err != nil {
 		return "", fmt.Errorf("unable to query Local Machine Startup Registry: %v", err)
@@ -104,5 +99,5 @@ func Startup_RegistryCU() (string, error){
 			result += fmt.Sprintf("  %s: %s\n", name, value)
 		}
 	}
-  return result, nil
+	return result, nil
 }

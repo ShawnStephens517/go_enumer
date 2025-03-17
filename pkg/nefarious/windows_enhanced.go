@@ -23,19 +23,18 @@ func ShellPopCalc() {
 	//Code me Here
 }
 
-func ProcessInject(){
+func ProcessInject() {
 	fmt.Println("Attempt Process Injection")
 	//Code Here
 }
 
-func Voltorb(){
+func Voltorb() {
 	// Self-Removing function. Silly Pokemon Reference to Self-Destruct
-	fmt.Println("Removes itself..."
+	fmt.Println("Removes itself...")
 	//Code Here
 }
 
-func  NewDLL() {
+func NewDLL() {
 	fmt.Println("Creating New DLL")
 	//Code Here
 }
-

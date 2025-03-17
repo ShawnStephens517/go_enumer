@@ -60,9 +60,9 @@ Flags:
 			entries = oscheck.LinCheck()
 
 		//case "darwin":
-			//fmt.Println("Running MacOS Enumer")
-			//entries = oscheck.MacCheck()
-		
+		//fmt.Println("Running MacOS Enumer")
+		//entries = oscheck.MacCheck()
+
 		default:
 			fmt.Printf("Unsupported OS: %s\n", runtime.GOOS)
 			os.Exit(1)
@@ -82,10 +82,10 @@ func init() {
 	rootCmd.Flags().StringP("outputJSON", "OJ", "", "Export to JSON Only")
 	rootCmd.Flags().StringP("outputCSV", "OC", "", "Export to CSV Only")
 	rootCmd.Flags().StringP("filename", "fn", "enumerresults"+time.Now().Format("20060102150405"), "Base name for the Output files")
-	rootCmd.Flags().StringP("sourceIP", "source", "", "Reverse Shell call back IP.\nEnsure Listener Started on callback host to receive the connection" 
+	rootCmd.Flags().StringP("sourceIP", "source", "", "Reverse Shell call back IP.\nEnsure Listener Started on callback host to receive the connection")
 	rootCmd.Flags().IntP("gitPort", "egP", 443, "Non Standard port for Git operations. EX:5000")
 	rootCmd.Flags().IntP("httpPort", "ehP", 80, "Specify Web Server receiving the results. EX: 443 or 8080")
-	root.Cmd.Flags().IntP("sourcePort", "sP", 9090, "Specify the port the reverse shell should connect")
+	rootCmd.Flags().IntP("sourcePort", "sP", 9090, "Specify the port the reverse shell should connect")
 }
 func main() {
 	fmt.Println("Call checker based on OS type")
