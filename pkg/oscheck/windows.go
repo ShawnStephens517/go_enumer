@@ -509,6 +509,42 @@ func WinCheck() []logging.LogEntry {
 		})
 	}
 	utils.WaitForNextCheck()
+
+	// Startup Apps Registry HKLM
+	if output, err := Startup_RegistryLM(; err != nil {
+		entries = append(entries, logging.LogEntry{
+			Timestamp: now,
+			CheckName: "Logging Info",
+			Message:   fmt.Sprintf("Error: %v", err),
+			Data:      "",
+		})
+	} else {
+		entries = append(entries, logging.LogEntry{
+			Timestamp: now,
+			CheckName: "Logging Info",
+			Message:   "Captured",
+			Data:      output,
+		})
+	}
+	utils.WaitForNextCheck()
+
+	// Startup Apps Registry HKCU
+	if output, err := Startup_RegistryCU(; err != nil {
+		entries = append(entries, logging.LogEntry{
+			Timestamp: now,
+			CheckName: "Logging Info",
+			Message:   fmt.Sprintf("Error: %v", err),
+			Data:      "",
+		})
+	} else {
+		entries = append(entries, logging.LogEntry{
+			Timestamp: now,
+			CheckName: "Logging Info",
+			Message:   "Captured",
+			Data:      output,
+		})
+	}
+	utils.WaitForNextCheck()
 	// Additional checks can be added here in the same manner.
 	return entries
 }
