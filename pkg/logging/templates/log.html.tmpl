@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enumeration Log</title>
+  <style>
+    :root {
+      --primary-color: #4B0082; /* Dark Royal Purple */
+      --secondary-color: #6A0DAD; /* Accent purple */
+      --text-color: #FFFFFF;
+      --background-color: #2C003E; /* Deep dark background */
+      --header-background: var(--secondary-color);
+      --table-row-alt: #3D1A5C; /* Slightly lighter shade for alternating rows */
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid var(--secondary-color);
+      word-wrap: break-word;
+    }
+    th {
+      background-color: var(--header-background);
+    }
+    tr:nth-child(even) {
+      background-color: var(--table-row-alt);
+    }
+    /* Responsive styles */
+    @media screen and (max-width: 600px) {
+      th, td {
+        padding: 8px 10px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+      tr {
+        border: 1px solid var(--secondary-color);
+        margin-bottom: 10px;
+      }
+      td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+      }
+      td:before {
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        white-space: nowrap;
+        font-weight: bold;
+      }
+      td:nth-of-type(1):before { content: "Timestamp"; }
+      td:nth-of-type(2):before { content: "Check Name"; }
+      td:nth-of-type(3):before { content: "Message"; }
+      td:nth-of-type(4):before { content: "Data"; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enumeration Log</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Check Name</th>
+          <th>Message</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{range .}}
+        <tr>
+          <td>{{.Timestamp.Format "2006-01-02 15:04:05"}}</td>
+          <td>{{.CheckName}}</td>
+          <td>{{.Message}}</td>
+          <td>{{.Data}}</td>
+        </tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
