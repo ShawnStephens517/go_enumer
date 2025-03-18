@@ -38,15 +38,17 @@ jobs:
           # Determine file extension based on OS.
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             ext=".exe"
+            tagFlag="-tags windows"
           else
             ext=""
+            tagFlag=""
           fi
           echo "Building $BUILD_TYPE binary for ${{ matrix.os }}..."
           if [ "$BUILD_TYPE" = "garble" ]; then
             go install mvdan.cc/garble@latest
-            garble build -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
+            garble build $tagFlag -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
           else
-            go build -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
+            go build $tagFlag-o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
           fi
 
       - name: Upload artifact

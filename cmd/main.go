@@ -30,16 +30,20 @@ var rootCmd = &cobra.Command{
 	Long: `goenumer is a lightweight tool that mimics some functionallity found in WinPeas/LinPeas.
 
 Flags:
--eg, --exfilGit: Exfil results of the enumeration to a Git Repo.
--egP, --gitPort: Specify a port to push to if not HTTP/S based.
---eh, --exfilHTTP: Exfil to a Web Server.
---ehP, --httpPort: Specify port for the receiving Web Server.
---CZD, --ChariZarD: Runs all nefarious functions on the machine. This is a designed to be extremely noisy.
--OA, --outputall: Outputs results to CSV, HTML, JSON files.
--OH, --outputHTML: Outputs results to HTML.
--OJ, --outputJSON: Outputs results to JSON.
--OC, --outputCSV: Outputs results to CSV.
--fn, --filename: Base name for the results file/s.
+-G, --exfilGit: Exfil results of the enumeration to a Git Repo.
+-g, --gitPort: Specify a port to push to if not HTTP/S based.
+-E, --exfilHTTP: Exfil to a Web Server.
+-P, --httpPort: Specify port for the receiving Web Server.
+--ChariZarD: Runs all nefarious functions on the machine. This is a designed to be extremely noisy.
+-O, --outputall: Outputs results to CSV, HTML, JSON files.
+-H, --outputHTML: Outputs results to HTML.
+-J, --outputJSON: Outputs results to JSON.
+-C, --outputCSV: Outputs results to CSV.
+-f, --filename: Base name for the results file/s.
+-T, --timeroff: Use timer function to randomly stagger checks
+--sourceIP: Reverse Shell connect back IP
+--sourcePort: Port to connect back too. Defaults 9090
+--reverse: Calls the shell function to initiate a generic Reverse Shell. Source IP flag required!
 `,
 
 	Run: func(cmd *cobra.Command, args []string) {
@@ -55,6 +59,11 @@ Flags:
 		case "linux":
 			fmt.Println("Running Linux Enumer")
 			entries = oscheck.LinCheck()
+
+		//case "darwin":
+		//fmt.Println("Running MacOS Enumer")
+		//entries = oscheck.MacCheck()
+
 		default:
 			fmt.Printf("Unsupported OS: %s\n", runtime.GOOS)
 			os.Exit(1)
@@ -66,15 +75,19 @@ Flags:
 
 func init() {
 	rootCmd.Flags().BoolP("help", "h", false, "Displays help info")
-	rootCmd.Flags().StringP("exfilGit", "eg", "", "Exfil results to Git Repo")
-	rootCmd.Flags().StringP("exfilHTTP", "eh", "", "Exfil results to Web Server")
-	rootCmd.Flags().StringP("outputall", "OA", "", "Export to CSV, HTML, JSON")
-	rootCmd.Flags().StringP("outputHTML", "OH", "", "Export to HTML Only")
-	rootCmd.Flags().StringP("outputJSON", "OJ", "", "Export to JSON Only")
-	rootCmd.Flags().StringP("outputCSV", "OC", "", "Export to CSV Only")
-	rootCmd.Flags().StringP("filename", "fn", "enumerresults"+time.Now().Format("20060102150405"), "Base name for the Output files")
-	rootCmd.Flags().IntP("gitPort", "egP", 443, "Non Standard port for Git operations. EX:5000")
-	rootCmd.Flags().IntP("httpPort", "ehP", 80, "Specify Web Server receiving the results. EX: 443 or 8080")
+	rootCmd.Flags().BoolP("reverse", "", false, "Use the Reverse Shell Function")
+	rootCmd.Flags().BoolP("timeroff, T", "", true, "Use the Timer Function")
+	rootCmd.Flags().StringP("exfilGit", "G", "", "Exfil results to Git Repo")
+	rootCmd.Flags().StringP("exfilHTTP", "E", "", "Exfil results to Web Server")
+	rootCmd.Flags().StringP("outputall", "A", "", "Export to CSV, HTML, JSON")
+	rootCmd.Flags().StringP("outputHTML", "H", "", "Export to HTML Only")
+	rootCmd.Flags().StringP("outputJSON", "J", "", "Export to JSON Only")
+	rootCmd.Flags().StringP("outputCSV", "C", "", "Export to CSV Only")
+	rootCmd.Flags().StringP("filename", "f", "enumerresults"+time.Now().Format("20060102150405"), "Base name for the Output files")
+	rootCmd.Flags().StringP("sourceIP", "", "", "Reverse Shell call back IP.\nEnsure Listener Started on callback host to receive the connection")
+	rootCmd.Flags().IntP("gitPort", "g", 443, "Non Standard port for Git operations. EX:5000")
+	rootCmd.Flags().IntP("httpPort", "P", 80, "Specify Web Server receiving the results. EX: 443 or 8080")
+	rootCmd.Flags().IntP("sourcePort", "", 9090, "Specify the port the reverse shell should connect")
 }
 func main() {
 	fmt.Println("Call checker based on OS type")
