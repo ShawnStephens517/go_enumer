@@ -1,16 +1,10 @@
 //
+//go:build windows
 // +build windows
 
-package nefarious
-import (
-	"fmt"
-	"golang.org/x/sys/windows"
-	"log"
-	"os"
-	"unsafe"
-)
-/* TODO: Uncomment after review
+package windowsactions
 
+/*
 //https://github.com/LloydLabs/delete-self-poc/blob/main/main.c
 //https://github.com/timwhitez/Doge-SelfDelete/blob/main/selfdel.go
 

@@ -1,6 +1,8 @@
+//go:build windows
 // +build windows
 
-//package windows_actions
+package windowsactions
+
 /*
 The intent of this action is to "Embed" a secondary Go binary into the memory of the Current App
 The idea is to be extra stealthy with our execution. Run additional "nefarious" actions from memory.
@@ -12,3 +14,4 @@ TODO
 [] Review github.com/amenzhinsky/go-memexec
 [] Call the secondary binary at runtime to be executed similar to ATR powershell version (if possible)
 */
+//
