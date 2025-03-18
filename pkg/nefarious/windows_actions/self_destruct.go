@@ -9,6 +9,7 @@ import (
 	"os"
 	"unsafe"
 )
+/* TODO: Uncomment after review
 
 //https://github.com/LloydLabs/delete-self-poc/blob/main/main.c
 //https://github.com/timwhitez/Doge-SelfDelete/blob/main/selfdel.go
@@ -145,3 +146,4 @@ func Voltorb() {
 	}
 	fmt.Println("[*] Close file handler")
 }
+*/
