@@ -14,6 +14,11 @@ import (
 	"github.com/shawnstephens517/go_enumer/pkg/utils"
 )
 
+/*
+Inspiration from the PEAS-NG Project.
+https://github.com/peass-ng/PEASS-ng
+*/
+
 func checkWSL() (string, error) {
 	fmt.Println("Capture if WSL Enabled???")
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
