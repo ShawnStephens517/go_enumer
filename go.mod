@@ -1,6 +1,6 @@
 module github.com/shawnstephens517/go_enumer
 
-go 1.24.1
+go 1.24
 
 require (
 	github.com/spf13/cobra v1.9.1
