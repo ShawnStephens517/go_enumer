@@ -16,6 +16,7 @@ jobs:
     name: Build binaries
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-latest]
         buildType: [normal, garble]
@@ -46,9 +47,9 @@ jobs:
           echo "Building $BUILD_TYPE binary for ${{ matrix.os }}..."
           if [ "$BUILD_TYPE" = "garble" ]; then
             go install mvdan.cc/garble@latest
-            garble build $tagFlag -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
+            garble -literals build $tagFlag -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
           else
-            go build $tagFlag-o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
+            go build $tagFlag -o goenumer-${{ matrix.os }}-${{ matrix.buildType }}${ext} ./cmd/...
           fi
 
       - name: Upload artifact
