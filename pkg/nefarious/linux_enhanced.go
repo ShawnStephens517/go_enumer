@@ -5,6 +5,7 @@ package nefarious
 
 import (
 	"fmt"
+	"github.com/shawnstephens517/go_enumer/nefarious/linuxactions
 )
 
 func linux_Enchaned() {
@@ -14,4 +15,5 @@ func linux_Enchaned() {
 
 func Linux_Nefarious() {
 	linux_Enchaned()
+	linuxactions.Reciever()
 }
